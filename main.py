@@ -49,7 +49,6 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 from skimage.feature import hog
 import cv2
-import matplotlib.pyplot as plt
 
 def find_folder(path):
     # This function determines whether the path to the folder exists, and is_dir ensures that it is a folder (not just a file)
@@ -151,6 +150,8 @@ def single_prediction(folder, model):
     else:
         print("\nThe model was INCORRECT.")
 
+    return None
+
 def main():
     # Get user input for the name of the csv file and the folder
     train_csv = input("Enter the path to the TRAINING csv file: ")
@@ -213,10 +214,12 @@ def main():
 
     # Gets user input for the folder to pull the test cases from (this is for future integration if you want to extrapolate the data to a different vehicle)
     # At this time that accuracy is kind of bad because the training data exclusively uses ~5000 images from the BMW i3
-    folder_path = input("Enter the name of the folder with the possible test cases: ")
-    folder_path = find_folder(folder_path)
-    if folder_path is None:
-        print("Error: The folder does not exist. Please try again.")
+    folder_path = None
+    while folder_path == None:
+        folder_path = input("Enter the name of the folder with the possible test cases: ")
+        folder_path = find_folder(folder_path)
+        if folder_path is None:
+            print("Error: The folder does not exist. Please try again.")
 
     # Calls the function to make a prediction
     single_prediction(folder_path, model)
