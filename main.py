@@ -49,6 +49,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 from skimage.feature import hog
 import cv2
+import matplotlib.pyplot as plt
 
 def find_folder(path):
     # This function determines whether the path to the folder exists, and is_dir ensures that it is a folder (not just a file)
@@ -142,6 +143,13 @@ def single_prediction(folder, model):
             correct_ID = classID_from_name(img_path) # Calls a function from the other file to check just the single classID
             break
     
+    img = cv2.imread(str(img_path))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    plt.imshow(img)
+    plt.title(f"Selected Image: {img_path.name}")
+    plt.axis("off")
+    plt.show()
+
     features = HOG_feature_extraction([img_path]) # Calls the HOG feature extraction for just this file, in brackets because it expects an array
     prediction = model.predict(features)[0] # Using that feature vector, it makes a prediction
 
